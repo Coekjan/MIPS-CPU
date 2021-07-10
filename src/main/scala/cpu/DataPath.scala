@@ -30,7 +30,7 @@ class DataPath extends Module{
   private val grf = Module(new GeneralRegisterFile)
   private val ext = Module(new Extender)
   private val alu = Module(new ArithmeticLogicUnit)
-  private val dm = Module(new DataMemory(12))
+  private val dm = Module(new DataMemory(22))
 
   io.opcode := (im.io.dataOut >> 26).asUInt()
   io.funct := im.io.dataOut & 0x3f.U
