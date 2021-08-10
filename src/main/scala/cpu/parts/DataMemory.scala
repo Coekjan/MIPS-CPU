@@ -15,7 +15,7 @@ object DataMemory {
 
 class DataMemory(val addressSize: Int) extends Module {
   val io = IO(new DataMemory.IOBundle(addressSize))
-  private val memory = Mem(1 << (addressSize - 2), Vec(4, UInt(8.W)))
+  private val memory = SyncReadMem(1 << (addressSize - 2), Vec(4, UInt(8.W)))
   private val address = (io.address >> 2).asUInt()
 
   io.dataOut := memory.read(address)
