@@ -1,4 +1,5 @@
 import chisel3._
+import chisel3.util.experimental.forceName
 import cpu.{Controller, DataPath}
 
 object MIPS {
@@ -11,6 +12,9 @@ class MIPS extends Module {
   val io = IO(new MIPS.IOBundle)
   private val dataPath = Module(new DataPath)
   private val controller = Module(new Controller)
+
+  override def desiredName = "mips"
+  forceName(clock, "clk")
 
   io.pc := dataPath.io.currentPC
 
