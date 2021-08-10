@@ -7,7 +7,7 @@ import cpu.parts.ArithmeticLogicUnit.Signal.EQ_ZR
 
 object ArithmeticLogicUnit {
   object Control extends ChiselEnum {
-    val AND, OR, ADDU, SUBU, SLT = Value
+    val AND, OR, ADDU, SUBU, SLT, XOR = Value
   }
 
   object Signal extends ChiselEnum {
@@ -32,6 +32,7 @@ class ArithmeticLogicUnit extends Module{
   io.output := MuxCase(0.U, Seq(
     (io.control === AND)  -> (io.value1 & io.value2),
     (io.control === OR)   -> (io.value1 | io.value2),
+    (io.control === XOR)  -> (io.value1 ^ io.value2),
     (io.control === ADDU) -> (io.value1 + io.value2),
     (io.control === SUBU) -> (io.value1 - io.value2),
     (io.control === SLT)  -> (io.value1.asSInt() < io.value2.asSInt()).asUInt()
