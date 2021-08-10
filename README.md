@@ -4,7 +4,7 @@ Single Cycle CPU
 ## Instructions
 
 The CPU supports the following instructions:
-* **R-type**: `add`, `addu`, `subu`, `jr`, `jalr`
+* **R-type**: `add`, `addu`, `subu`, `jr`, `jalr`, `xor`
 * **I-type**: `ori`, `addi`, `addiu`, `slti`, `lw`, `sw`, `beq`, `bne`, `bgez`, `bgtz`, `blez`, `bltz`, `lui`
 * **J-type**: `jal`, `j`
 

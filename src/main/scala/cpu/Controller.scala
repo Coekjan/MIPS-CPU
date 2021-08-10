@@ -43,6 +43,7 @@ class Controller extends Module {
   private val subu        = regType && io.funct === "b_100011".U
   private val jr          = regType && io.funct === "b_001000".U
   private val jalr        = regType && io.funct === "b_001001".U
+  private val xor         = regType && io.funct === "b_100110".U
   private val ori         = io.opcode === "b_001101".U
   private val addi        = io.opcode === "b_001000".U
   private val addiu       = io.opcode === "b_001001".U
@@ -60,19 +61,19 @@ class Controller extends Module {
   private val j           = io.opcode === "b_000010".U
 
   io.grfWriteAddrSel := MuxCase(GRFWriteAddrSelector.ZR, Seq(
-    (add || addu || subu || jalr)                   -> GRFWriteAddrSelector.RD,
+    (add || addu || xor || subu || jalr)            -> GRFWriteAddrSelector.RD,
     (ori || addi || addiu || slti || lw || lui)     -> GRFWriteAddrSelector.RT,
     (jal)                                           -> GRFWriteAddrSelector.RA
   ))
   io.grfWriteDataSel := MuxCase(GRFWriteDataSelector.VOID, Seq(
-    (add || addu || subu || ori || addi || addiu || slti)   -> GRFWriteDataSelector.ALU_OUT,
-    (lw)                                                    -> GRFWriteDataSelector.DM_OUT,
-    (lui)                                                   -> GRFWriteDataSelector.EXT_OUT,
-    (jal || jalr)                                           -> GRFWriteDataSelector.NPC_PC4
+    (add || addu || xor || subu || ori || addi || addiu || slti)  -> GRFWriteDataSelector.ALU_OUT,
+    (lw)                                                          -> GRFWriteDataSelector.DM_OUT,
+    (lui)                                                         -> GRFWriteDataSelector.EXT_OUT,
+    (jal || jalr)                                                 -> GRFWriteDataSelector.NPC_PC4
   ))
-  io.grfWriteEn := add || addu || subu || ori || addi || addiu || slti || lw || lui || jal || jalr
+  io.grfWriteEn := add || addu || xor || subu || ori || addi || addiu || slti || lw || lui || jal || jalr
   io.aluValue2Sel := MuxCase(ALUValue2Selector.ZERO, Seq(
-    (add || addu || subu || beq || bne)             -> ALUValue2Selector.GRF_RD2,
+    (add || addu || xor || subu || beq || bne)      -> ALUValue2Selector.GRF_RD2,
     (ori || addi || addiu || slti || lw || sw)      -> ALUValue2Selector.EXT_OUT,
     (bgez || bgtz || blez || bltz)                  -> ALUValue2Selector.ZERO
   ))
@@ -95,6 +96,7 @@ class Controller extends Module {
     (add || addu || addi || addiu || lw || sw)            -> ArithmeticLogicUnit.Control.ADDU,
     (subu || beq || bne || bgez || bgtz || blez || bltz)  -> ArithmeticLogicUnit.Control.SUBU,
     (ori)                                                 -> ArithmeticLogicUnit.Control.OR,
-    (slti)                                                -> ArithmeticLogicUnit.Control.SLT
+    (slti)                                                -> ArithmeticLogicUnit.Control.SLT,
+    (xor)                                                 -> ArithmeticLogicUnit.Control.XOR
   ))
 }
