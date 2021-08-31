@@ -78,5 +78,5 @@ class DataPath extends Module{
   dm.io.currentPC := pc.io.current
   dm.io.writeEn := io.memWriteEn
   dm.io.address := alu.io.output
-  dm.io.dataIn := WordTo4Bytes(grf.io.readData2)
+  dm.io.dataIn := grf.io.readData2
 }
