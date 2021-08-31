@@ -32,8 +32,8 @@ class MIPSTest extends FreeSpec with ChiselScalatestTester {
 module MIPS_TB;
     reg clock;
     reg reset;
-    MIPS uut (
-        .clock(clock),
+    mips uut (
+        .clk(clock),
         .reset(reset)
     );
     initial begin
